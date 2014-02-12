@@ -9,7 +9,7 @@ int check_character_by_character(char ch1, char ch2)
 }    
     
 
-int case_insensitive_string_compare(char *s1, char *s2)
+int i_strcmp(char *s1, char *s2)
 {
     int i, rv;
 
@@ -36,7 +36,7 @@ int case_insensitive_string_compare(char *s1, char *s2)
 int main()
 {
     char s1[20] = "HELLO";
-    char s2[20] = "";
-    printf("%d\n", case_insensitive_string_compare(s1, s2));
+    char s2[20] = "hello123";
+    printf("%d\n", i_strcmp(s1, s2));
     return 0;
 }
