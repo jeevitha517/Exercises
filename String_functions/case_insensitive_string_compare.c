@@ -2,9 +2,9 @@
 
 int check_character_by_character(char ch1, char ch2)
 {
-    if((ch1 >= 65) && (ch1 <= 90)) || ((ch1 >= 97) && (ch2 <= 122)) {
+    if(((ch1 >= 'A') && (ch1 <= 'Z')) || ((ch1 >= 'a') && (ch1 <= 'z'))) {
     }
-    if((ch2 >= 65) && (ch2 <= 90)) || ((ch2 >= 97) && (ch2 <= 122)) {
+    if(((ch2 >= 'A') && (ch2 <= 'Z')) || ((ch2 >= 'a') && (ch2 <= 'z'))) {
     }
     if((ch1 - ch2 == 32) || (ch1 - ch2 == -32)) {
         return 0;
