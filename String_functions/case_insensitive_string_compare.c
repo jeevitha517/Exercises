@@ -2,10 +2,6 @@
 
 int check_character_by_character(char ch1, char ch2)
 {
-    if(((ch1 >= 'A') && (ch1 <= 'Z')) || ((ch1 >= 'a') && (ch1 <= 'z'))) {
-    }
-    if(((ch2 >= 'A') && (ch2 <= 'Z')) || ((ch2 >= 'a') && (ch2 <= 'z'))) {
-    }
     if((ch1 - ch2 == 32) || (ch1 - ch2 == -32)) {
         return 0;
     }
@@ -27,7 +23,7 @@ int case_insensitive_string_compare(char *s1, char *s2)
         return 1;
     }
 
-    for (i = 0; (s1[i] != '\0') && (s2[i] != '\0'); s1++, s2++) {
+    for (i = 0; (s1[i] != '\0') || (s2[i] != '\0'); s1++, s2++) {
         rv = check_character_by_character(s1[i], s2[i]);
         
         if(rv != 0) {
@@ -39,8 +35,8 @@ int case_insensitive_string_compare(char *s1, char *s2)
 
 int main()
 {
-    char s1[20] = "hello";
-    char s2[20] = "HELLO";
+    char s1[20] = "HELLO";
+    char s2[20] = "";
     printf("%d\n", case_insensitive_string_compare(s1, s2));
     return 0;
 }
