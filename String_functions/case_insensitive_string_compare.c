@@ -40,14 +40,12 @@ int i_strcmp(char *s1, char *s2)
 
 int main()
 {
-    char s1[20] = "AA@B";
-    char s2[20] = "AA b";
-    printf("%d\n", i_strcmp("AA@B", "AA b"));
-    printf("%d\n", i_strcmp("HELLO", "hello"));
-    printf("%d\n", i_strcmp("HeLLo", "hEllO"));
-    printf("%d\n", i_strcmp("HELLO123", "hello1"));
-    printf("%d\n", i_strcmp("HELLO", "hello123"));
-    printf("%d\n", i_strcmp("", "hello"));
-    printf("%d\n", i_strcmp("HELLO", ""));
+    printf("%20s  %20s  %d\n", "AA@B", "AA b", i_strcmp("AA@B", "AA b"));
+    printf("%20s  %20s  %d\n", "HELLO", "hello", i_strcmp("HELLO", "hello"));
+    printf("%20s  %20s  %d\n", "HeLLo", "hEllO", i_strcmp("HeLLo", "hEllO"));
+    printf("%20s  %20s  %d\n", "HELLO123", "hello1", i_strcmp("HELLO123", "hello1"));
+    printf("%20s  %20s  %d\n", "HELLO", "hello123", i_strcmp("HELLO", "hello123"));
+    printf("%20s  %20s  %d\n", "", "hello", i_strcmp("", "hello"));
+    printf("%20s  %20s  %d\n", "HELLO", "", i_strcmp("HELLO", ""));
     return 0;
 }
