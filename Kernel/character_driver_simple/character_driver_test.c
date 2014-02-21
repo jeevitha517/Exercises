@@ -3,6 +3,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include "character_driver.h"
 
 char write_buff[100] = "jeevitha";
 

@@ -2,6 +2,7 @@
 #include <linux/string.h>
 #include <linux/fs.h>
 #include <asm/uaccess.h>
+#include "character_driver.h"
 
 //module attributes
 MODULE_LICENSE("GPL"); // This avoids kernel taint warning
@@ -10,15 +11,15 @@ MODULE_AUTHOR("Jeevitha");
 
 static char tmp[100] = {0};
 
-int string_rev(char tmp[])
+int string_rev(char *str)
 {
     int len, i, j, swap = 0;
-    len = strlen(tmp);
+    len = strlen(str);
 
     for (i = 0, j = (len-1); i < (len/2); i++, j--) {
-        swap = tmp[i];
-        tmp[i] = tmp[j];
-        tmp[j] = swap;
+        swap = str[i];
+        str[i] = str[j];
+        str[j] = swap;
     }
 
     return 0;
@@ -87,6 +88,37 @@ static ssize_t dev_write(struct file *filp, const char *buff, size_t len, loff_t
 static long dev_ioctl(struct file *fil, unsigned int cmd, unsigned long arg)
 {
     printk(KERN_ALERT "%s : %d\n", __FUNCTION__, __LINE__);
+    char *tmp_ptr;
+    static int buf_size;
+    
+    switch (cmd) {
+        case CD_IOC_ALLOC_BUF:
+            buf_size = arg;
+            char *kern_buf =             
+            
+        break;
+        
+        case CD_IOC_WRITE_STRING:
+            tmp_ptr = (char *)arg;
+            copy_from_user(kern_buf, tmp_ptr, buf_size);
+            break
+
+        case CD_IOC_REVERSE_STRING:
+            int rv;
+            rv = string_rev(kern_buf);
+            break;
+
+        case CD_IOC_READ_STRING:
+            copy_to_user(tmp_ptr, kern_buf, buf_size);
+            break;
+
+        case CD_IOC_FREE_BUF:
+            void kfree(cons void *fil);
+            break;
+            
+        default:
+            return -1;
+    }
     return 0;
 }
 
