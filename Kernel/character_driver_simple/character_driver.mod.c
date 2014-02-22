@@ -21,7 +21,9 @@ __attribute__((section("__versions"))) = {
 	{ 0x6bc3fbc0, "__unregister_chrdev" },
 	{ 0xd9a5d47d, "__register_chrdev" },
 	{ 0x37ff4c06, "copy_from_user_overflow" },
+	{ 0x12da5bb2, "__kmalloc" },
 	{ 0x362ef408, "_copy_from_user" },
+	{ 0x37a0cba, "kfree" },
 	{ 0xd0d8621b, "strlen" },
 	{ 0x2f287f0d, "copy_to_user" },
 	{ 0x50eedeb8, "printk" },
@@ -34,4 +36,4 @@ __attribute__((section(".modinfo"))) =
 "depends=";
 
 
-MODULE_INFO(srcversion, "D3623320ED58B2620E3A434");
+MODULE_INFO(srcversion, "5911AEB767A555C08EF006C");

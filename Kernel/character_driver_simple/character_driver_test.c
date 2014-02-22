@@ -31,9 +31,30 @@ int main()
     if(read_bytes < 0) {
         printf("Error in reading\n");
     }
-   /* printf("Do you want to ioctl: 1 - Yes, 0 - No : ");
+
+    printf("Do you want to ioctl: 1 - Yes, 0 - No : ");
     scanf("%d", &num);
-    rv = ioctl(fd, 0, NULL);*/
+    rv = ioctl(fd, CD_IOC_ALLOC_BUF, sizeof(write_buff));
+    if(rv < 0) {
+        printf("Error in CD_IOC_ALLOC_BUF\n");
+    }
+
+    rv = ioctl(fd, CD_IOC_WRITE_STRING, write_buff);
+    if(rv < 0) {
+        printf("Error in CD_IOC_WRITE_STRING\n");
+    }
+
+    rv = ioctl(fd, CD_IOC_REVERSE_STRING);
+    if(rv < 0) {
+        printf("Error in CD_IOC_REVERSE_STRING\n");
+    }
+
+    rv = ioctl(fd, CD_IOC_READ_STRING, read_data);
+    if(rv < 0) {
+        printf("Error in CD_IOC_READ_STRING\n");
+    }
+
+    ioctl(fd);
 
     printf("Do you want to close: 1 - Yes, 0 - No : ");
     scanf("%d", &num);

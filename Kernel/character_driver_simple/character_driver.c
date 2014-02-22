@@ -2,6 +2,7 @@
 #include <linux/string.h>
 #include <linux/fs.h>
 #include <asm/uaccess.h>
+#include <linux/slab.h>
 #include "character_driver.h"
 
 //module attributes
@@ -82,38 +83,43 @@ static ssize_t dev_write(struct file *filp, const char *buff, size_t len, loff_t
     copy_from_user(tmp, buff, len);
     printk(KERN_ALERT "%s\n", tmp);
     rv = string_rev(tmp);
+    return len;
 }
 
 //called when 'ioctl' system call is done on device file
 static long dev_ioctl(struct file *fil, unsigned int cmd, unsigned long arg)
 {
+    char *tmp_ptr = NULL;
+    static int buf_size = 0;
+    static char *kern_buf = NULL;
+    int rv;
+
     printk(KERN_ALERT "%s : %d\n", __FUNCTION__, __LINE__);
-    char *tmp_ptr;
-    static int buf_size;
-    
+ 
     switch (cmd) {
         case CD_IOC_ALLOC_BUF:
             buf_size = arg;
-            char *kern_buf =             
-            
-        break;
-        
+            kern_buf = (char *) kmalloc(buf_size, GFP_USER);            
+            printk(KERN_ALERT " buf_size %d kern_buf %p\n", buf_size, kern_buf);
+            break;
+
         case CD_IOC_WRITE_STRING:
             tmp_ptr = (char *)arg;
             copy_from_user(kern_buf, tmp_ptr, buf_size);
-            break
+            printk(KERN_ALERT "CD_IOC_WRITE_STRING: kern_buf %s\n", kern_buf);
+            break;
 
         case CD_IOC_REVERSE_STRING:
-            int rv;
             rv = string_rev(kern_buf);
+            printk(KERN_ALERT "CD_IOC_REVERSE_STRING: kern_buf %s\n", kern_buf);
             break;
 
         case CD_IOC_READ_STRING:
-            copy_to_user(tmp_ptr, kern_buf, buf_size);
+            copy_to_user((char *) arg, kern_buf, buf_size);
             break;
 
         case CD_IOC_FREE_BUF:
-            void kfree(cons void *fil);
+            kfree(fil);
             break;
             
         default:
