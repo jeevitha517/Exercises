@@ -1,0 +1,2 @@
+/home/jeevitha/Exercises_02_21_2014/Kernel/character_driver_simple/character_driver.ko
+/home/jeevitha/Exercises_02_21_2014/Kernel/character_driver_simple/character_driver.o
