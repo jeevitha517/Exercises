@@ -93,6 +93,7 @@ static long dev_ioctl(struct file *fil, unsigned int cmd, unsigned long arg)
     static int buf_size = 0;
     static char *kern_buf = NULL;
     int rv;
+    struct string tmp_s;
 
     printk(KERN_ALERT "%s : %d\n", __FUNCTION__, __LINE__);
  
@@ -121,7 +122,15 @@ static long dev_ioctl(struct file *fil, unsigned int cmd, unsigned long arg)
         case CD_IOC_FREE_BUF:
             kfree(fil);
             break;
-            
+
+        case CD_IOC_READ_WRITE_REVERSE_STRING:
+            copy_from_user(&tmp_s, (struct string *) arg, sizeof(tmp_s));
+            printk(KERN_ALERT "String from user space %s\n", tmp_s.original);
+            rv = string_rev(tmp_s.original);
+            printk(KERN_ALERT "Reversed String %s\n", tmp_s.original);
+            copy_to_user(&(((struct string *) arg)->reverse), tmp_s.original, sizeof(tmp_s.original));
+            break;
+         
         default:
             return -1;
     }
