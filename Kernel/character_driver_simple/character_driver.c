@@ -12,9 +12,13 @@ MODULE_DESCRIPTION("Device Driver Demo");
 MODULE_AUTHOR("Jeevitha");
 
 static char tmp[100] = {0};
-int count = 0;
-int ioctl_5_count = 0;
-int ioctl_1_count = 0;
+typedef struct string_rev_stats_s {
+    int read_write;
+    int ioctls_5;
+    int ioctls_1;
+} string_rev_stats_t;
+
+string_rev_stats_t strrev_stat;
 
 int string_rev(char *str)
 {
@@ -35,8 +39,13 @@ int character_driver_read_procmem( char *buf, char **start, off_t offset, int co
     int len = 0;    /* Format the data in the buffer */
     printk(KERN_ALERT "%s : %d\n", __FUNCTION__, __LINE__);
 
+    len += sprintf( buf + len, "String reversal using 5-ioctls   : %d\n",  strrev_stat.ioctls_5);
+    len += sprintf( buf + len, "String reversal using 1-ioctls   : %d\n",  strrev_stat.ioctls_1);
+    len += sprintf( buf + len, "String reversal using read-write : %d\n",  strrev_stat.read_write);
+#if 0
     len += sprintf( buf + len, "my first line of proc data\n" );
     len += sprintf( buf + len, "my second line of proc data\n" );      
+#endif
    
     *eof = 1;
  
@@ -102,7 +111,7 @@ static ssize_t dev_write(struct file *filp, const char *buff, size_t len, loff_t
     copy_from_user(tmp, buff, len);
     printk(KERN_ALERT "%s\n", tmp);
     rv = string_rev(tmp);
-    count++;
+    strrev_stat.read_write++;
 
     return len;
 }
@@ -133,7 +142,7 @@ static long dev_ioctl(struct file *fil, unsigned int cmd, unsigned long arg)
 
         case CD_IOC_REVERSE_STRING:
             rv = string_rev(kern_buf);
-            ioctl_5_count++;
+            strrev_stat.ioctls_5++;
             printk(KERN_ALERT "CD_IOC_REVERSE_STRING: kern_buf %s\n", kern_buf);
             break;
 
@@ -149,7 +158,7 @@ static long dev_ioctl(struct file *fil, unsigned int cmd, unsigned long arg)
             copy_from_user(&tmp_s, (struct string *) arg, sizeof(tmp_s));
             printk(KERN_ALERT "String from user space %s\n", tmp_s.original);
             rv = string_rev(tmp_s.original);
-            ioctl_1_count++;
+            strrev_stat.ioctls_1++;
             printk(KERN_ALERT "Reversed String %s\n", tmp_s.original);
             copy_to_user(&(((struct string *) arg)->reverse), tmp_s.original, sizeof(tmp_s.original));
             break;
